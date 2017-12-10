@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, TouchableOpacity, Image, View, StyleSheet } from 'react-native';
 import { FontSize, Colors } from '../theme';
+import { formatTime } from '../util/formatTime';
 
 const styles = StyleSheet.create({
   item: {
@@ -8,6 +9,7 @@ const styles = StyleSheet.create({
     paddingBottom: 6,
     backgroundColor: 'white',
     margin: 6,
+    position: 'relative',
   },
   header: {
     marginBottom: 8,
@@ -55,41 +57,59 @@ const styles = StyleSheet.create({
   dropDown: {
     alignSelf: 'flex-start',
   },
+  moreOptions: {
+    borderColor: Colors.border,
+    borderWidth: 1,
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    height: 100,
+    width: 60,
+    padding: 5,
+    zIndex: 999,
+  },
   dropDownIcon: {
     width: 16,
     height: 16,
   },
 });
-export default () => (<View style={styles.item}>
-  <View style={styles.header}>
-    <Image
-      style={styles.avator}
-      source={require('../assets/images/avator.png')}
-    />
-    <View style={{ flexGrow: 1 }}>
-      <Text style={styles.author}>我就是浩神</Text>
-      <Text style={styles.time}>2017-12-23</Text>
+export default props =>
+  (<View style={styles.item}>
+    <View style={styles.header}>
+      <Image
+        style={styles.avator}
+        source={require('../assets/images/avator.png')}
+      />
+      <View style={{ flexGrow: 1 }}>
+        <Text style={styles.author}>{props.detail.user}</Text>
+        <Text style={styles.time}>{formatTime(props.detail.time)}</Text>
+      </View>
+      <View />
+      <View
+        style={styles.dropDown}
+      >
+        <TouchableOpacity
+          onPress={e => console.log(e.target)}
+        >
+          <Image style={styles.dropDownIcon} source={require('../assets/images/dropDown.png')} />
+        </TouchableOpacity>
+      </View>
     </View>
-    <View />
-    <View style={styles.dropDown} >
-      <Image style={styles.dropDownIcon} source={require('../assets/images/dropDown.png')} />
+    <Text
+      style={styles.content}
+    >{props.detail.content}</Text>
+    <View style={styles.operations}>
+      <TouchableOpacity style={styles.operationItem}>
+        <Image style={styles.operationIcon} source={require('../assets/images/forword.png')} />
+        <Text style={styles.operationText}>转发</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.operationItem}>
+        <Image style={styles.operationIcon} source={require('../assets/images/comment.png')} />
+        <Text style={styles.operationText}>评论</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.operationItem}>
+        <Image style={styles.operationIcon} source={require('../assets/images/like.png')} />
+        <Text style={styles.operationText}>点赞</Text>
+      </TouchableOpacity>
     </View>
-  </View>
-  <Text
-    style={styles.content}
-  >RN的0.43版终于出来了，现在大家期待已久的listview的升级版flatlist终于跟大家见面了，我也是关注了好久哦，现在将使用说明，和例子给大家简单的讲解下。</Text>
-  <View style={styles.operations}>
-    <TouchableOpacity style={styles.operationItem}>
-      <Image style={styles.operationIcon} source={require('../assets/images/forword.png')} />
-      <Text style={styles.operationText}>转发</Text>
-    </TouchableOpacity>
-    <TouchableOpacity style={styles.operationItem}>
-      <Image style={styles.operationIcon} source={require('../assets/images/comment.png')} />
-      <Text style={styles.operationText}>评论</Text>
-    </TouchableOpacity>
-    <TouchableOpacity style={styles.operationItem}>
-      <Image style={styles.operationIcon} source={require('../assets/images/like.png')} />
-      <Text style={styles.operationText}>点赞</Text>
-    </TouchableOpacity>
-  </View>
-</View>);
+  </View>);
